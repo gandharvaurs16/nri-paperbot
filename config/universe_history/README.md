@@ -1,0 +1,1 @@
+Place point-in-time Nifty 200 constituent files here named YYYY-MM-DD.csv. At least one dated file every 31 days is needed for a replay. Each file needs Symbol and Industry or Sector columns, with at least 150 rows. Never use a later file for an earlier date.
