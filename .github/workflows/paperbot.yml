@@ -1,0 +1,77 @@
+name: NRI paper bot
+on:
+  schedule:
+    - cron: '45 10 * * 1-5' # 16:15 IST
+    - cron: '30 12 * * 1-5' # data-provider retry; idempotent
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: nri-paperbot
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    outputs:
+      outcome: ${{ steps.bot.outcome }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Validate engine
+        run: python -m unittest discover -s tests -v
+      - name: Paper run
+        id: bot
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: claude-sonnet-5-5
+        run: python -m bot.main
+      - name: Commit ledger and deployable dashboard
+        run: |
+          git config user.name "paperfolio-bot"
+          git config user.email "paperfolio-bot@users.noreply.github.com"
+          git add data/state.json docs/state.json config/holidays_*.json
+          if [ -f data/final_30_day_report.json ]; then git add data/final_30_day_report.json docs/final_30_day_report.json; fi
+          if [ -d config/universe_history ]; then git add config/universe_history/; fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Paper simulation update $(date -u +%F)"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Prepare Pages
+        uses: actions/configure-pages@v5
+      - name: Upload static dashboard
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+      - name: Send optional one-way summary
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          OUTCOME: ${{ steps.bot.outcome }}
+        run: |
+          python -m bot.notify "Paperfolio ${OUTCOME}: $(python -c 'import json;d=json.load(open("data/state.json"));print(d.get("status","unknown"))')"
+  deploy:
+    needs: run
+    if: always() && needs.run.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
