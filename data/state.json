@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "revision": 1,
+  "capital": 100000,
+  "settings": {
+    "account": "NRO non-PIS",
+    "accountBasis": "Zerodha NRO non-PIS paper model; actual broker eligibility requires a current dated allowlist.",
+    "start": "2026-09-28",
+    "end": "2026-10-27",
+    "slippage": 0.1,
+    "riskPerTrade": 0.005,
+    "maxPositions": 6,
+    "maxStockWeight": 0.2,
+    "maxSectorWeight": 0.35,
+    "minCashWeight": 0.2,
+    "hardDrawdown": 0.1,
+    "frameworkVersion": "v1.0"
+  },
+  "lastProcessed": null,
+  "status": "Awaiting first scheduled run; approved-symbol list empty",
+  "holidays": [],
+  "snapshots": [],
+  "trades": [],
+  "reports": [],
+  "sessions": [],
+  "pendingOrders": [],
+  "cashSettlements": [],
+  "reviews": [],
+  "frameworkHistory": [
+    {
+      "version": "v1.0",
+      "date": "2026-09-28",
+      "reason": "Initial rules for 30-day delivery-only simulation",
+      "changes": "Initial delivery-only swing framework, 0.5% risk per trade, 10% drawdown stop; AI proposes, code validates.",
+      "expectedEffect": "Limit downside and avoid unverified or illiquid setups."
+    }
+  ],
+  "watchlist": [
+    {
+      "symbol": "RELIANCE",
+      "sector": "Energy and retail",
+      "status": "Candidate; setup and NRI eligibility unverified"
+    },
+    {
+      "symbol": "INFY",
+      "sector": "IT",
+      "status": "Candidate; setup and NRI eligibility unverified"
+    },
+    {
+      "symbol": "HDFCBANK",
+      "sector": "Financials",
+      "status": "Candidate; setup and NRI eligibility unverified"
+    },
+    {
+      "symbol": "LT",
+      "sector": "Industrials",
+      "status": "Candidate; setup and NRI eligibility unverified"
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "sector": "Pharma",
+      "status": "Candidate; setup and NRI eligibility unverified"
+    },
+    {
+      "symbol": "ITC",
+      "sector": "Consumer",
+      "status": "Candidate; setup and NRI eligibility unverified"
+    }
+  ],
+  "cash": 100000,
+  "positions": {},
+  "closed": [],
+  "totalCosts": 0,
+  "estimatedTax": 0,
+  "peakEquity": 100000,
+  "lastEquity": 100000,
+  "drawdown": 0,
+  "paused": false,
+  "universe": {},
+  "incidents": [],
+  "strategy": {
+    "min_volume_ratio": 1.2,
+    "min_momentum60": 0.0
+  }
+}
