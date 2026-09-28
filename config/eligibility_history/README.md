@@ -1,0 +1,1 @@
+For historical replays, place dated YYYY-MM-DD.json eligibility snapshots here, at least every seven calendar days. Format: {"checked_on":"YYYY-MM-DD","source":"dated broker/official evidence","approved":["SYMBOL"],"blocked":[]}. A future or stale file authorizes no buys. For live runs, the current config/eligibility.json is used when no dated archive file applies.
