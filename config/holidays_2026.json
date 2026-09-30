@@ -1,7 +1,7 @@
 {
   "source": "https://www.nseindia.com/api/holiday-master?type=trading",
   "clearing_source": "https://www.nseindia.com/api/holiday-master?type=clearing",
-  "checked_on": "2026-09-29",
+  "checked_on": "2026-09-30",
   "coverage_end": "2026-12-31",
   "holidays": {
     "2026-01-15": "Municipal Corporation Election - Maharashtra",
